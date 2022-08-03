@@ -88,7 +88,9 @@ class Movieflix:
             os.system('cls')
             print('Sorry...')
             if input('Want to download another...Y/N: ').lower() == 'y':
-                self.search()
+                os.system('cls')
+                print('Feature comming soon...')
+                self.query_found = False
             else:
                 self.query_found = False
             return
@@ -175,18 +177,20 @@ class Movieflix:
 mf = Movieflix()
 mf.search()
 mf.refine_search()
-for i, name in zip(mf.find_correct_choice(), mf.name):
-    os.system('cls')
-    print(f'Downloading --> {name}')
-    link = mf.down_pg_2(mf.down_pg_1(i))
-    if mf.link_broken:
-        mf.link_broken = False
-        print('Movie link broken..cant download...')
-        continue
-    if mf.diff:
-        mf.final_pg(link, name)
-        mf.diff = False
-    else:
-        mf.final_pg(mf.down_pg_3(link), name)
+obj = mf.find_correct_choice()
+if mf.query_found:
+    for i, name in zip(obj, mf.name):
+        os.system('cls')
+        print(f'Downloading --> {name}')
+        link = mf.down_pg_2(mf.down_pg_1(i))
+        if mf.link_broken:
+            mf.link_broken = False
+            print('Movie link broken..cant download...')
+            continue
+        if mf.diff:
+            mf.final_pg(link, name)
+            mf.diff = False
+        else:
+            mf.final_pg(mf.down_pg_3(link), name)
 
 print('Thanks for using PServices..🤪🤪🤪')
