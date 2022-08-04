@@ -12,5 +12,5 @@ This is just a project that I made for fun...Try it and tell me what can I impro
 3. If you are using any download manager...Download its .crx file and specify the path for that. As a matter of fact I am using free download manager(fdm). I recommend using one as browser will close after fetching ur file.
 
 <h2>Note</h2>
-Note there are 2 website as of today one for Kdramas/Cdramas and all and one for hollywood and bollywood movies...<br>
+There are 2 website as of today one for Kdramas/Cdramas and all and one for hollywood and bollywood movies...<br>
 For dramacool.py u have to fill the captcha if there is one...as for movieflix.py u dont have to do anything.
