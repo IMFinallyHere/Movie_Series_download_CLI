@@ -71,11 +71,10 @@ class Movieflix:
         if not self.query_found:
             return
 
-        i = 1
         print('Enter:')
-        for item in self.refined_results:
+        for item, i in zip(self.refined_results, range(1, len(self.refined_results)+1)):
             print(f'{i} for -> {item}')
-            i += 1
+
         if input('Is ur choice in the list??Y/N: ').lower() != 'n':
             n = [int(i) - 1 for i in input(
                 'Enter number from list above, u can also download multiple just seperate number by "," : ').split(',')]
@@ -104,7 +103,10 @@ class Movieflix:
         try:
             a = soup.select('.maxbutton-post-button-1')[-1].get('href')
         except Exception:
-            a = soup.select('.maxbutton-post-button')[-1].get('href')
+            try:
+                a = soup.select('.maxbutton-post-button')[-1].get('href')
+            except Exception:
+                a = soup.select('.maxbutton-download-links')[-1].get('href')
         return a
 
     def down_pg_2(self, link):
