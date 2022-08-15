@@ -162,4 +162,8 @@ if __name__ == '__main__':
     dc.get_all_ep_pg(dc.find_correct_choice(dc.search()))
     dc.downloading(dc.get_ep_download_links())
     os.system('cls')
+    if not dc.query_found:
+        print('¯\_(ツ)_/¯')
+        print('Not found')
+        print('Sorry')
     print('Thanks for using PServices..🤪🤪🤪')

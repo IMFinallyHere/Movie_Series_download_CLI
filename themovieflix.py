@@ -19,6 +19,7 @@ class Movieflix:
         self.website_url = ''
         self.query_found = False
         self.refined_results = []
+        self.download_complete = False
         self.search_results = []
         self.name = []
         self.diff = False
@@ -142,15 +143,33 @@ class Movieflix:
             return
         if self.link_broken:
             return
+        try:
+            soup = bs4((rq.get(link)).text, 'html.parser')
+            a = soup.select_one('#editPrivacyBtn').get('onclick')[15:-2]
+            return a
+        except AttributeError:
+            driver = webdriver.Chrome(options=self.options, service=Service(self.chrome_driver_path))
+            driver.minimize_window()
+            driver.get(link)
 
-        soup = bs4((rq.get(link)).text, 'html.parser')
-        a = soup.select_one('#editPrivacyBtn').get('onclick')[15:-2]
-        return a
+            a = WebDriverWait(driver, 60).until(
+                EC.presence_of_element_located((By.CLASS_NAME, 'download-btn')))
+            a.click()
+
+            a = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.LINK_TEXT, ' Click here to start your download ')))
+            a.click()
+            self.download_complete = True
+            return ''
+
+
 
     def final_pg(self, link, name):
         if not self.query_found:
             return
         if self.link_broken:
+            return
+        if self.download_complete:
             return
         capa = DesiredCapabilities.CHROME
         capa["pageLoadStrategy"] = "none"
