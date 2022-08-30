@@ -12,7 +12,7 @@ from selenium.webdriver.chrome.options import Options
 
 class DramaCool:
     def __init__(self):
-        self.website_url = 'https://www1.dramacool.ee'
+        self.website_url = 'https://dramacool.cr'
         self.query_found = False
         self.ep_to_download = []
         self.ep_number = []
