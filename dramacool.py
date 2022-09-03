@@ -10,6 +10,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 
 
+# noinspection PyBroadException
 class DramaCool:
     def __init__(self):
         self.website_url = 'https://dramacool.cr'
@@ -46,7 +47,7 @@ class DramaCool:
         media_page = (
             (search_results[int(input('Which:')) - 1].get('onclick')).replace('window.location = \'', '')).replace('\'',
                                                                                                                    '')
-        return self.website_url+media_page
+        return self.website_url + media_page
 
     def get_all_ep_pg(self, media_page):
         if not self.query_found:
@@ -65,7 +66,7 @@ class DramaCool:
             if '-' in ep_numbers:
                 ep_numbers = ep_numbers.split('-')
                 lis = []
-                for i in range(int(ep_numbers[0]),int(ep_numbers[1])+1):
+                for i in range(int(ep_numbers[0]), int(ep_numbers[1]) + 1):
                     lis.append(i)
                 ep_numbers = lis
             else:
@@ -76,12 +77,10 @@ class DramaCool:
             print('Got ur movie...✌✌')
             self.movie = True
 
-
         for i in self.ep_number:
             self.ep_to_download.append(ep_pg[i])
 
         return
-
 
     def get_ep_download_links(self):
         if not self.query_found:
@@ -96,7 +95,6 @@ class DramaCool:
                 ep_download.append("https://" + str(i).split('\n')[0][11:-18])
         return ep_download
 
-
     def downloading(self, ep_download):
         if not self.query_found:
             return
@@ -107,18 +105,17 @@ class DramaCool:
         options.binary_location = "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
         # fdm
         options.add_extension('C:\\Users\\Priyansh\\PycharmProjects\\auto-download\\extension_3_0_57_0.crx')
-        #buster
+        # buster
         options.add_extension('C:\\Users\\Priyansh\\PycharmProjects\\auto-download\\buster.crx')
 
         options.add_experimental_option('detach', True)
 
-        for link,n in zip(ep_download,self.ep_number):
+        for link, n in zip(ep_download, self.ep_number):
             os.system('cls')
             if self.movie:
                 print(f'Downloading ur movie...')
             else:
-                print(f'Downloading episode {n+1}...😊')
-
+                print(f'Downloading episode {n + 1}...😊')
 
             driver = webdriver.Chrome(options=options, service=Service(chrome_driver_path))
             driver.minimize_window()
