@@ -107,6 +107,8 @@ class DramaCool:
         options.binary_location = "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
         # fdm
         options.add_extension('C:\\Users\\Priyansh\\PycharmProjects\\auto-download\\extension_3_0_57_0.crx')
+        #buster
+        options.add_extension('C:\\Users\\Priyansh\\PycharmProjects\\auto-download\\buster.crx')
 
         options.add_experimental_option('detach', True)
 
