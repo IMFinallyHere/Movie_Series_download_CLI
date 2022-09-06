@@ -10,7 +10,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 
 
-# noinspection PyBroadException
+# noinspection PyBroadException,PyMethodMayBeStatic
 class DramaCool:
     def __init__(self):
         self.website_url = 'https://dramacool.cr'
@@ -99,14 +99,15 @@ class DramaCool:
         if not self.query_found:
             return
 
-        chrome_driver_path = 'C:\\Users\\Priyansh\\PycharmProjects\\auto-download\\chromedriver.exe'
+        chrome_driver_path = '.\\chromedriver.exe'
 
         options = Options()
+        # browser location
         options.binary_location = "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
         # fdm
-        options.add_extension('C:\\Users\\Priyansh\\PycharmProjects\\auto-download\\extension_3_0_57_0.crx')
+        options.add_extension('.\\fdm.crx')
         # buster
-        options.add_extension('C:\\Users\\Priyansh\\PycharmProjects\\auto-download\\buster.crx')
+        options.add_extension('.\\buster.crx')
 
         options.add_experimental_option('detach', True)
 
@@ -122,8 +123,14 @@ class DramaCool:
             driver.get(link)
             if self.check_captcha(driver):
                 driver.maximize_window()
-                print('Found captcha')
-                input('Press enter after filling it...')
+                WebDriverWait(driver, 10000).until(EC.frame_to_be_available_and_switch_to_it(
+                    (By.CSS_SELECTOR, "iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']")))
+                WebDriverWait(driver, 1000).until(
+                    EC.element_to_be_clickable((By.XPATH, "//span[@id='recaptcha-anchor']"))).click()
+                WebDriverWait(driver, 1000).until(
+                    EC.presence_of_element_located(
+                        (By.XPATH, "//span[@id='recaptcha-anchor' and @aria-checked='true']")))
+                driver.switch_to.default_content()
                 driver.find_element(By.ID, 'btn-submit').click()
                 driver.minimize_window()
                 time.sleep(5)
@@ -145,7 +152,7 @@ class DramaCool:
         return
 
     def check_captcha(self, driver):
-        """Returns true if captach found on page"""
+        """Returns true if captcha found on page"""
         try:
             WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located((By.ID, "captcha-v2"))

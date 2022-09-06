@@ -1,6 +1,4 @@
 import os
-import time
-
 from bs4 import BeautifulSoup as bs4
 import requests as rq
 from selenium.webdriver.support.ui import WebDriverWait
@@ -13,7 +11,7 @@ from selenium.webdriver.chrome.options import Options
 import re
 
 
-# noinspection PyBroadException
+# noinspection PyBroadException,PyShadowingNames
 class Movieflix:
     def __init__(self):
         self.website_url = ''
@@ -24,12 +22,12 @@ class Movieflix:
         self.name = []
         self.diff = False
         self.link_broken = False
-        self.chrome_driver_path = 'C:\\Users\\Priyansh\\PycharmProjects\\auto-download\\chromedriver.exe'
+        self.chrome_driver_path = '.\\chromedriver.exe'
         self.options = Options()
         self.options.binary_location = "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
         self.options.add_experimental_option('detach', True)
         # fdm
-        self.options.add_extension('C:\\Users\\Priyansh\\PycharmProjects\\auto-download\\extension_3_0_57_0.crx')
+        self.options.add_extension('.\\fdm.crx')
 
     def search(self):
         os.system('cls')
@@ -59,7 +57,7 @@ class Movieflix:
             again = input('Want to download another...Y/N:')
             if again.lower() == 'y':
                 os.system('cls')
-                print('Feature comming soon...')
+                print('Feature coming soon...')
 
     def refine_search(self):
         for item in self.search_results:
@@ -73,12 +71,12 @@ class Movieflix:
             return
 
         print('Enter:')
-        for item, i in zip(self.refined_results, range(1, len(self.refined_results)+1)):
+        for item, i in zip(self.refined_results, range(1, len(self.refined_results) + 1)):
             print(f'{i} for -> {item}')
 
         if input('Is ur choice in the list??Y/N: ').lower() != 'n':
             n = [int(i) - 1 for i in input(
-                'Enter number from list above, u can also download multiple just seperate number by "," : ').split(',')]
+                'Enter number from list above, u can also download multiple just separate number by "," : ').split(',')]
             media_page = []
             for i in n:
                 media_page.append(self.search_results[i].get('href'))
@@ -89,7 +87,7 @@ class Movieflix:
             print('Sorry...')
             if input('Want to download another...Y/N: ').lower() == 'y':
                 os.system('cls')
-                print('Feature comming soon...')
+                print('Feature coming soon...')
                 self.query_found = False
             else:
                 self.query_found = False
@@ -161,8 +159,6 @@ class Movieflix:
             a.click()
             self.download_complete = True
             return ''
-
-
 
     def final_pg(self, link, name):
         if not self.query_found:
