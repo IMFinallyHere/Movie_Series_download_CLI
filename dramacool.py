@@ -1,5 +1,8 @@
+import math
 import os
 import time
+
+import selenium.common.exceptions
 from bs4 import BeautifulSoup as bs4
 import requests as rq
 from selenium.webdriver.support.ui import WebDriverWait
@@ -123,13 +126,18 @@ class DramaCool:
             driver.get(link)
             if self.check_captcha(driver):
                 driver.maximize_window()
-                WebDriverWait(driver, 10000).until(EC.frame_to_be_available_and_switch_to_it(
+
+                WebDriverWait(driver, 100).until(EC.frame_to_be_available_and_switch_to_it(
                     (By.CSS_SELECTOR, "iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']")))
-                WebDriverWait(driver, 1000).until(
+                WebDriverWait(driver, 100).until(
                     EC.element_to_be_clickable((By.XPATH, "//span[@id='recaptcha-anchor']"))).click()
-                WebDriverWait(driver, 1000).until(
-                    EC.presence_of_element_located(
-                        (By.XPATH, "//span[@id='recaptcha-anchor' and @aria-checked='true']")))
+                try:
+                    WebDriverWait(driver, 1).until(
+                        EC.presence_of_element_located(
+                            (By.XPATH, "//span[@id='recaptcha-anchor' and @aria-checked='true']")))
+                except selenium.common.exceptions.TimeoutException:
+                    self.solve_captcha(driver)
+
                 driver.switch_to.default_content()
                 driver.find_element(By.ID, 'btn-submit').click()
                 driver.minimize_window()
@@ -150,6 +158,31 @@ class DramaCool:
             print('Browser closed')
 
         return
+
+    def solve_captcha(self, driver):
+        driver.switch_to.default_content()
+        WebDriverWait(driver, 50).until(EC.frame_to_be_available_and_switch_to_it(
+            (By.CSS_SELECTOR, "iframe[name^='c-'][src^='https://www.google.com/recaptcha/api2/bframe?']")))
+
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, '.help-button-holder'))).click()
+        time.sleep(3)
+
+        driver.switch_to.default_content()
+        try:
+            WebDriverWait(driver, 5).until(EC.frame_to_be_available_and_switch_to_it(
+                (By.CSS_SELECTOR, "iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']")))
+            WebDriverWait(driver, 4).until(EC.presence_of_element_located(
+                        (By.XPATH, "//span[@id='recaptcha-anchor' and @aria-checked='true']")))
+            return
+        except Exception:
+            driver.switch_to.default_content()
+            WebDriverWait(driver, 50).until(EC.frame_to_be_available_and_switch_to_it(
+                (By.CSS_SELECTOR, "iframe[name^='c-'][src^='https://www.google.com/recaptcha/api2/bframe?']")))
+            WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, '.image-button-holder'))).click()
+            time.sleep(2)
+            self.solve_captcha(driver)
 
     def check_captcha(self, driver):
         """Returns true if captcha found on page"""
