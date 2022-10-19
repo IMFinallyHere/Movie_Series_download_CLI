@@ -13,7 +13,8 @@ This is just a project that I made for fun...Try it and tell me what can I impro
 
 <h2>Note</h2>
 1. There are 2 website as of today one for Kdramas/Cdramas and all and one for hollywood and bollywood movies...<br>
-2. For dramacool.py u have to fill the captcha if there is one...as for movieflix.py u dont have to do anything.<br>
-3. For best experience run code using termial or cmd.<br>
-4. If you are using mac replace this 'os.system('cls')' with 'os.system('clear')'. <br>
-5. When we dramacool.py browser may open a captcha code just solve the captcha and verify, then just go to where u r running ur program just hit enter...😉. 
+2. For best experience run code using termial or cmd.<br>
+3. If you are using mac replace this 'os.system('cls')' with 'os.system('clear')'. <br>
+
+<h2>Enjoy..😉</h2>
+
